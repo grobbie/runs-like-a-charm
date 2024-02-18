@@ -4,8 +4,6 @@
 
 """Objects representing the state of RunsLikeACharm."""
 
-import os
-
 from ops import Framework, Object, Relation
 
 from core.models import RunsLikeACharm, RunsLikeACharmCluster
@@ -80,7 +78,7 @@ class ClusterState(Object):
 
     @property
     def ready_to_start(self) -> Status:
-        """Currently not implemented
+        """Currently not implemented.
 
         Returns:
             NO_PEER_RELATION if clustered but not related

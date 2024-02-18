@@ -7,10 +7,7 @@
 import logging
 from typing import MutableMapping
 
-from kazoo.exceptions import AuthFailedError, NoNodeError
 from ops.model import Application, Relation, Unit
-from tenacity import retry, retry_if_not_result, stop_after_attempt, wait_fixed
-
 from literals import Substrate
 
 logger = logging.getLogger(__name__)

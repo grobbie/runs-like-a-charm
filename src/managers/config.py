@@ -46,19 +46,22 @@ class RunsLikeACharmConfigManager:
         return self.config.cloud_init_yaml
 
     @property
-    def environment_config(self) -> list[str]:
+    def environment_variables(self) -> list[str]:
         """Return the user-defined environment variables that
             need to be set
 
         Returns:
             List of environment variables to set
         """
-        environment_variables = self.config.environment_config.split(",")
+        environment_variables = self.config.environment_variables.split(",")
 
     def set_environment(self) -> None:
         """Writes the env-vars requested by the user."""
 
-        updated_env_list = self.environment_config
+        updated_env_list = self.environment_variables
+
+        if updated_env_list is None:
+            return
 
         def map_env(env: list[str]) -> dict[str, str]:
             map_env = {}

@@ -17,12 +17,10 @@ from core.structured_config import CharmConfig
 from health import RunsLikeACharmHealth
 from literals import (
     CHARM_KEY,
-    GROUP,
     PEER,
-    USER,
     Status,
     Substrate,
-    CloudInitScript,
+    DebugLevel,
 )
 from managers.config import RunsLikeACharmConfigManager
 from workload import RunsLikeACharmWorkload
@@ -68,6 +66,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
     def _on_install(self, _) -> None:
         """Handler for `install` event."""
         if self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path):
+            logger.info("Set cloud-config succeeded")
             self.config_manager.set_environment()
         else:
             self._set_status(Status.CLOUD_INIT_FAIL)
@@ -118,6 +117,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
                 )
             )
             self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path)
+            self.workload.restart()
 
     def _on_update_status(self, event: EventBase) -> None:
         """Handler for `update-status` events."""

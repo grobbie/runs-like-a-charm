@@ -15,7 +15,6 @@ from tenacity.wait import wait_fixed
 from typing_extensions import override
 
 from core.workload import WorkloadBase
-from literals import GROUP, USER, CloudInitScript
 
 logger = logging.getLogger(__name__)
 
@@ -57,12 +56,13 @@ class RunsLikeACharmWorkload(WorkloadBase):
         return content
 
     @override
-    def write(self, content: str, path: str, mode: str = "w") -> None:
+    def write(self, content: str, path: str, mode: str = "w") -> bool:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, mode) as f:
             f.write(content)
 
         # self.exec(f"chown -R {USER}:{GROUP} {path}")
+        return True
 
     @override
     def exec(

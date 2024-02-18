@@ -88,7 +88,7 @@ class CharmConfig(BaseConfigModel):
             return ""
 
         try:
-            data = yaml.safe_load(value)    
+            yaml.safe_load(value)    
         except yaml.YAMLError:
                 raise ValueError("Invalid YAML provided")
         return value
