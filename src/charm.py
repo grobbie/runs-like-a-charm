@@ -99,7 +99,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         # NOTE todo: check this bit
         # Load current properties set in the charm workload
-        cloud_init_file = self.workload.read(self.workload.paths.cloud_init)
+        cloud_init_file = self.workload.read(self.config_manager.cloud_init_path)
         cloud_init_file_changed = set(cloud_init_file) ^ set(self.config_manager.cloud_init_yaml)
 
         if not cloud_init_file:

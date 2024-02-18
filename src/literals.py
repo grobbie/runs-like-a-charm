@@ -45,7 +45,7 @@ class Status(Enum):
         ActiveStatus("user filesystem added to node at /opt/data"),
         "DEBUG",
     )
-    CLOUD_INIT_NOT_POSSIBLE = StatusLevel(
+    CLOUD_INIT_FAIL = StatusLevel(
         BlockedStatus("cloud-init configuration cannot be set - check logs"),
         "ERROR",
     )

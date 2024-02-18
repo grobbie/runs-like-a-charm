@@ -62,7 +62,7 @@ class RunsLikeACharmWorkload(WorkloadBase):
         with open(path, mode) as f:
             f.write(content)
 
-        self.exec(f"chown -R {USER}:{GROUP} {path}")
+        # self.exec(f"chown -R {USER}:{GROUP} {path}")
 
     @override
     def exec(

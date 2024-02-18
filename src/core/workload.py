@@ -8,24 +8,8 @@ import secrets
 import string
 from abc import ABC, abstractmethod
 
-from literals import PATHS
-
-
-class RunsLikeACharmPaths:
-    """Object to store common paths for RunsLikeACharm."""
-
-    def __init__(self):
-        self.cloud_init_path = PATHS["CLOUDCFG"]
-
-    @property
-    def cloud_init_config(self):
-        """The cloud-init config filepath."""
-        return "/etc/cloud/cloud.cfg.d/zz99-runs-like-a-charm.cfg"
-
 class WorkloadBase(ABC):
     """Base interface for common workload operations."""
-
-    paths = RunsLikeACharmPaths()
 
     @abstractmethod
     def start(self) -> None:
