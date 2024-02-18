@@ -67,7 +67,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
     def _on_install(self, _) -> None:
         """Handler for `install` event."""
-        if self.workload.write(self.config.cloud_init_yaml, self.config.cloud_init_path):
+        if self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path):
             self.config_manager.set_environment()
         else:
             self._set_status(Status.CLOUD_INIT_FAIL)
@@ -117,7 +117,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
                     f'Node {self.unit.name.split("/")[1]} updating cloud-init yaml file'
                 )
             )
-            self.workload.write(self.config.cloud_init_yaml, self.config.cloud_init_path)
+            self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path)
 
     def _on_update_status(self, event: EventBase) -> None:
         """Handler for `update-status` events."""
