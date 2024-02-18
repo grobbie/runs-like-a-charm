@@ -1,0 +1,21 @@
+# Copyright 2023 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+description: |
+  RunsLikeACharm allows you to run any arbitrary software on your Juju infrastructure. This is useful for custom microservices, enterprise middleware or custom front end web applications that might not have a dedicated charm in [CharmHub](https://charmhub.io)
+display-name: RunsLikeACharm
+issues: https://github.com/grobbie/runs-like-a-charm/issues/new
+docs: https://github.com/grobbie/runs-like-a-charm/docs
+maintainers:
+  - Rob Gibbon <gh:grobbie>
+name: runs-like-a-charm
+series:
+  - jammy
+source: https://github.com/grobbie/runs-like-a-charm
+summary: The "run anything" charm
+
+peers:
+  cluster:
+    interface: cluster
+  restart:
+    interface: rolling_op

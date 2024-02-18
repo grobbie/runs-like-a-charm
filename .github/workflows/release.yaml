@@ -1,0 +1,53 @@
+# Copyright 2023 Canonical Ltd.
+# See LICENSE file for licensing details.
+name: Release to Charmhub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lib-check:
+    name: Check libraries
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check libs
+        uses: canonical/charming-actions/check-libraries@2.1.0
+        with:
+          credentials: "${{ secrets.CHARMHUB_TOKEN }}" # FIXME: current token will expire in 2023-07-04
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  ci-tests:
+    needs:
+      - lib-check
+    uses: ./.github/workflows/ci.yaml
+    secrets: inherit
+    permissions:
+      contents: write  # Needed to login to Discourse
+      pull-requests: write # Need to create PR
+      actions: write
+
+  build:
+    name: Build charm
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm_without_cache.yaml@v7
+
+  release:
+    name: Release to Charmhub
+    needs:
+      - lib-check
+      - ci-tests
+      - build
+    uses: canonical/data-platform-workflows/.github/workflows/release_charm.yaml@v7
+    with:
+      channel: 3/edge
+      artifact-name: ${{ needs.build.outputs.artifact-name }}
+    secrets:
+      charmhub-token: ${{ secrets.CHARMHUB_TOKEN }}
+    permissions:
+      contents: write  # Needed to create GitHub release

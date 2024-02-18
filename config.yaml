@@ -1,0 +1,12 @@
+# Copyright 2023 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+options:
+  cloud_init_yaml:
+     description: a base64 encoded YAML file following the cloud-init specification.
+     type: string
+     default: "#cloud-config"
+  environment_variables:
+     description: a set of comma (,) delimited key=value pairs.
+     type: string
+     default: ""
