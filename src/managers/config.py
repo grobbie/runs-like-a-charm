@@ -73,9 +73,9 @@ class RunsLikeACharmConfigManager:
                     map_env[key] = value
             return map_env
 
-        raw_current_env = self.workload.read("/etc/environment")
+        raw_current_env = self.workload.read(PATHS["ENVIRONMENT"])
         current_env = map_env(raw_current_env)
 
         updated_env = current_env | map_env(updated_env_list)
         content = "\n".join([f"{key}={value}" for key, value in updated_env.items()])
-        self.workload.write(content=content, path="/etc/environment")
+        self.workload.write(content=content, path=PATHS["ENVIRONMENT"])

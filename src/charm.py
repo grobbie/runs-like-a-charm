@@ -99,17 +99,16 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
+        # update environment
+        try:
+            self.config_manager.set_environment()
+        except:
+            self._set_status(Status.INIT_FAIL)
+            return
+
         # load up setup script
         setup_script_file = self.workload.read(self.config_manager.setup_script_path)
         setup_script_file_changed = set(setup_script_file) ^ set(self.config_manager.setup_script)
-
-        if not setup_script_file:
-            # Event fired before charm has properly started
-            event.defer()
-            return
-
-        # update environment
-        self.config_manager.set_environment()
 
         if setup_script_file_changed:
             logger.info(
