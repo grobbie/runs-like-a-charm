@@ -65,10 +65,10 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
     def _on_install(self, _) -> None:
         """Handler for `install` event."""
-        if self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path):
-            logger.info("Set setup script succeeded")
+        try:
+            self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
             self.config_manager.set_environment()
-        else:
+        except:
             self._set_status(Status.INIT_FAIL)
 
     def _on_start(self, event: EventBase) -> None:

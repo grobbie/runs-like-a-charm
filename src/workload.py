@@ -54,13 +54,12 @@ class RunsLikeACharmWorkload(WorkloadBase):
         return content
 
     @override
-    def write(self, content: str, path: str, mode: str = "w") -> bool:
+    def write(self, content: str, path: str, mode: str = "w") -> None:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, mode) as f:
             f.write(content)
 
         self.exec(f"chmod +x {path}")
-        return True
 
     @override
     def exec(
