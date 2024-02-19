@@ -46,9 +46,3 @@ class RunsLikeACharmConfigManager:
         """
         return self.config.setup_script
 
-    def set_rolling_restart_interval(self, interval: int) -> None:
-        self.interval = interval
-
-    @property
-    def rolling_restart_interval(self) -> int:
-        return self.interval

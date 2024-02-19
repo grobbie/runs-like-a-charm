@@ -5,7 +5,7 @@
 """Charmed Machine Operator that runs anything™."""
 
 import logging
-
+import time
 from charms.data_platform_libs.v0.data_models import TypedCharmBase
 from charms.rolling_ops.v0.rollingops import RollingOpsManager, RunWithLock
 from ops.framework import EventBase
@@ -17,6 +17,7 @@ from health import RunsLikeACharmHealth
 from literals import (
     CHARM_KEY,
     PEER,
+    INTERVAL
     Status,
     Substrate,
     DebugLevel,
@@ -135,7 +136,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
-        interval = self.config_manager.rolling_restart_interval
+        interval = self.model.get_relation(self.restart_manager.name).data[self.app].get(INTERVAL)
         time.sleep(interval)
         try:
             # reboot the instance
