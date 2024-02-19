@@ -23,6 +23,7 @@ from literals import (
     DebugLevel,
 )
 from managers.config import RunsLikeACharmConfigManager
+from events.restart import RollingRestartActionEvents
 from workload import RunsLikeACharmWorkload
 
 logger = logging.getLogger(__name__)

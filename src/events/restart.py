@@ -19,7 +19,7 @@ class RollingRestartActionEvents(Object):
     """Event handlers for password-related Juju Actions."""
 
     def __init__(self, charm):
-        super().__init__(charm, "rolling_restart_action_events")
+        super().__init__(charm, "restart")
         self.charm: "RunsLikeACharm" = charm
 
         self.framework.observe(
