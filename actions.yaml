@@ -3,7 +3,7 @@
 # In Juju 3 this will be easier to copy
 rolling-restart:
   description: Trigger a rolling restart for all nodes in this node group.
-    params:
+  params:
     interval:
       type: int
       description: Delay in seconds between node restarts.
