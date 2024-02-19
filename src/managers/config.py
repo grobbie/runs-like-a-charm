@@ -44,38 +44,3 @@ class RunsLikeACharmConfigManager:
             a setup script file to be run on the host
         """
         return self.config.setup_script
-
-    @property
-    def environment_variables(self) -> list[str]:
-        """Return the user-defined environment variables that
-            need to be set
-
-        Returns:
-            List of environment variables to set
-        """
-        environment_variables = self.config.environment_variables.split(",")
-
-    def set_environment(self) -> None:
-        """Writes the env-vars requested by the user."""
-
-        updated_env_list = self.environment_variables
-
-        if updated_env_list is None:
-            return
-
-        def map_env(env: list[str]) -> dict[str, str]:
-            map_env = {}
-            for var in env:
-                key = "".join(var.split("=", maxsplit=1)[0])
-                value = "".join(var.split("=", maxsplit=1)[1:])
-                if key:
-                    # only check for keys, as we can have an empty value for a variable
-                    map_env[key] = value
-            return map_env
-
-        raw_current_env = self.workload.read(PATHS["ENVIRONMENT"])
-        current_env = map_env(raw_current_env)
-
-        updated_env = current_env | map_env(updated_env_list)
-        content = "\n".join([f"{key}={value}" for key, value in updated_env.items()])
-        self.workload.write(content=content, path=PATHS["ENVIRONMENT"])

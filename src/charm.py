@@ -67,7 +67,6 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
         """Handler for `install` event."""
         try:
             self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
-            self.config_manager.set_environment()
         except:
             self._set_status(Status.INIT_FAIL)
 
@@ -97,13 +96,6 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
         # only overwrite cloud-init script if we're healthy
         if not self.healthy:
             event.defer()
-            return
-
-        # update environment
-        try:
-            self.config_manager.set_environment()
-        except:
-            self._set_status(Status.INIT_FAIL)
             return
 
         # load up setup script

@@ -27,7 +27,6 @@ DatabagScope = Literal["unit", "app"]
 
 PATHS = {
     "INSTALL_SCRIPT": "/opt/user-install-script",
-    "ENVIRONMENT": "/etc/environment",
 }
 
 @dataclass

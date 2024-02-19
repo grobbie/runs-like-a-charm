@@ -53,7 +53,6 @@ class LogLevel(str, Enum):
 class CharmConfig(BaseConfigModel):
     """Manager for the structured configuration."""
 
-    environment_variables: Optional[str] = None
     setup_script: Optional[str] = None
 
     @validator("*", pre=True)
@@ -62,20 +61,6 @@ class CharmConfig(BaseConfigModel):
         """Check for empty strings."""
         if value == "":
             return None
-        return value
-
-    @validator("environment_variables")
-    @classmethod
-    def environment_variables_validator(cls, value: str) -> str | None:
-        """Check validity of `environment_variables` field."""
-        if value is None:
-            return ""
-
-        try:
-            value.split(",")
-        except:
-            raise ValueError("Invalid environment variables provided. Format should be KEY=value delimited by ','")
-
         return value
 
     @validator("setup_script")
