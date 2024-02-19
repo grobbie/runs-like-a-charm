@@ -119,7 +119,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             )
             try:
                 self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
-                self.workload.restart()
+                self.workload.start()
             except:
                 self._set_status(Status.INIT_FAIL)
 
@@ -147,6 +147,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
         # FIXME
         time.sleep(10.0)
         try:
+            # reboot the instance
             self.workload.restart()
         except:
             self._set_status(Status.INIT_FAIL)
@@ -154,12 +155,14 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
     def _disable_enable_restart(self, event: RunWithLock) -> None:
         """Handler for `rolling_ops` disable_enable restart events."""
         if not self.healthy:
-            logger.warning(f"Node {self.unit.name.split('/')[1]} is not ready restart")
+            logger.warning(f"Node {self.unit.name.split('/')[1]} is not ready to restart")
             event.defer()
             return
 
         # treated the same as _restart
         time.sleep(10.0)
+
+        # reboot the instance
         self.workload.restart()
 
     @property

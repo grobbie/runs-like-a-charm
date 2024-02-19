@@ -40,8 +40,8 @@ class RunsLikeACharmWorkload(WorkloadBase):
 
     @override
     def restart(self) -> None:
-        """Same as start - runs the setup script"""
-        self.start()
+        """Reboots the node"""
+        self.exec("reboot")
 
     @override
     def read(self, path: str) -> list[str]:
