@@ -23,7 +23,7 @@ class RollingRestartActionEvents(Object):
         self.charm: "RunsLikeACharm" = charm
 
         self.framework.observe(
-            getattr(self.charm.on, "rolling_restart_action"), self._rolling_restart_action
+            getattr(self.charm.on, "rolling-restart"), self._rolling_restart_action
         )
 
     def _rolling_restart_action(self, event: ActionEvent) -> None:
