@@ -43,7 +43,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         # HANDLERS
 
-        #self.run_command_action_events = RunCommandActionEvents(self)
+        self.rolling_restart_action_events = RollingRestartActionEvents(self)
 
         # MANAGERS
 
@@ -53,7 +53,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         # LIB HANDLERS
 
-        self.restart = RollingOpsManager(self, relation="restart", callback=self._restart)
+        self.restart_manager = RollingOpsManager(self, relation="restart", callback=self._restart)
 
         self.framework.observe(getattr(self.on, "install"), self._on_install)
         self.framework.observe(getattr(self.on, "start"), self._on_start)
@@ -140,8 +140,11 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
         try:
             # reboot the instance
             self.workload.restart()
+            self.model.get_relation(self.restart_manager.name).data[self.unit].update(
+                {"restart-type": "restart"}
+            )
         except:
-            self._set_status(Status.INIT_FAIL)
+            self._set_status(Status.RESTART_FAIL)
 
     def _disable_enable_restart(self, event: RunWithLock) -> None:
         """Handler for `rolling_ops` disable_enable restart events."""
@@ -178,7 +181,6 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         getattr(logger, log_level.lower())(status.message)
         self.unit.status = status
-
 
 if __name__ == "__main__":
     main(RunsLikeACharm)

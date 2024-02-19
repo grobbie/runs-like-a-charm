@@ -50,3 +50,7 @@ class Status(Enum):
         BlockedStatus("setup configuration cannot be set - check logs"),
         "ERROR",
     )
+    RESTART_FAIL = StatusLevel(
+        BlockedStatus("Rolling restart failed - check logs"),
+        "ERROR",
+    )
