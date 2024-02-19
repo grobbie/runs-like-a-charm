@@ -135,12 +135,11 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
+        interval = self.config_manager.rolling_restart_interval
+        time.sleep(interval)
         try:
             # reboot the instance
             self.workload.restart()
-            self.model.get_relation(self.restart_manager.name).data[self.unit].update(
-                {"restart-type": "restart"}
-            )
         except:
             self._set_status(Status.RESTART_FAIL)
 

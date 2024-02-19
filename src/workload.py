@@ -41,7 +41,7 @@ class RunsLikeACharmWorkload(WorkloadBase):
     @override
     def restart(self) -> None:
         """Reboots the node"""
-        self.exec("shutdown -r +1")
+        self.exec("shutdown -r now")
 
     @override
     def read(self, path: str) -> list[str]:

@@ -4,7 +4,6 @@
 
 """Event handlers for password-related Juju Actions."""
 import logging
-import time
 from typing import TYPE_CHECKING
 
 from ops.charm import ActionEvent
@@ -45,8 +44,8 @@ class RollingRestartActionEvents(Object):
             return
 
         roll_interval = event.params.get("interval", 0)
+        self.charm.config_manager.set_rolling_restart_interval(roll_interval)
 
-        time.sleep(roll_interval)
         try:
             self.charm.on[self.charm.restart_manager.name].acquire_lock.emit()
         except Exception as e:

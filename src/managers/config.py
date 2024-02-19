@@ -28,6 +28,7 @@ class RunsLikeACharmConfigManager:
         self.state = state
         self.workload = workload
         self.config = config
+        self.interval = 0
 
     @property
     def setup_script_path(self) -> str:
@@ -44,3 +45,10 @@ class RunsLikeACharmConfigManager:
             a setup script file to be run on the host
         """
         return self.config.setup_script
+
+    def set_rolling_restart_interval(self, interval: int) -> None:
+        self.interval = interval
+
+    @property
+    def rolling_restart_interval(self) -> int:
+        return self.interval
