@@ -45,7 +45,7 @@ class RollingRestartActionEvents(Object):
 
         roll_interval = event.params.get("interval", 0)
         self.charm.model.get_relation(self.charm.restart_manager.name).data[self.charm.app].update(
-            {"restart-interval": roll_interval}
+            {"restart-interval": f"{roll_interval}"}
         )
 
         try:
