@@ -71,13 +71,11 @@ class CharmConfig(BaseConfigModel):
         if value is None:
             return ""
 
-        pat = re.compile(r"(?<pair>(?<key>.+?)(?:=)(?<value>[^=]+)(?:,|$))")
-        matches = re.findall(pat, value)
-        for match in matches:
-            try:
-                re.compile(match)
-            except re.error:
-                raise ValueError("Invalid environment variable provided")
+        try:
+            value.split(",")
+        except:
+            raise ValueError("Invalid environment variables provided. Format should be KEY=value delimited by ','")
+
         return value
 
     @validator("setup_script")
