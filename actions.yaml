@@ -5,5 +5,5 @@ rolling-restart:
   description: Trigger a rolling restart for all nodes in this node group.
   params:
     interval:
-      type: int
+      type: integer
       description: Delay in seconds between node restarts.
