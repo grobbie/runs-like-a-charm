@@ -41,7 +41,7 @@ class RunsLikeACharmWorkload(WorkloadBase):
     @override
     def restart(self) -> None:
         """Same as start - runs the setup script"""
-        start()
+        self.start()
 
     @override
     def read(self, path: str) -> list[str]:
