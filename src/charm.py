@@ -5,7 +5,6 @@
 """Charmed Machine Operator that runs anything™."""
 
 import logging
-import time
 
 from charms.data_platform_libs.v0.data_models import TypedCharmBase
 from charms.rolling_ops.v0.rollingops import RollingOpsManager, RunWithLock
@@ -136,8 +135,6 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
-        # FIXME
-        time.sleep(10.0)
         try:
             # reboot the instance
             self.workload.restart()
@@ -146,19 +143,6 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             )
         except:
             self._set_status(Status.RESTART_FAIL)
-
-    def _disable_enable_restart(self, event: RunWithLock) -> None:
-        """Handler for `rolling_ops` disable_enable restart events."""
-        if not self.healthy:
-            logger.warning(f"Node {self.unit.name.split('/')[1]} is not ready to restart")
-            event.defer()
-            return
-
-        # treated the same as _restart
-        time.sleep(10.0)
-
-        # reboot the instance
-        self.workload.restart()
 
     @property
     def healthy(self) -> bool:
