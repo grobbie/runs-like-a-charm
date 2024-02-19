@@ -13,7 +13,7 @@ from tenacity.retry import retry_if_not_result
 from tenacity.stop import stop_after_attempt
 from tenacity.wait import wait_fixed
 from typing_extensions import override
-from literals import PATHS
+from literals import PATHS, CMD_TIMEOUT
 from core.workload import WorkloadBase
 
 logger = logging.getLogger(__name__)
@@ -72,6 +72,7 @@ class RunsLikeACharmWorkload(WorkloadBase):
                 universal_newlines=True,
                 shell=True,
                 cwd=working_dir,
+                timeout=CMD_TIMEOUT
             )
             logger.debug(f"{output=}")
             return output

@@ -3,7 +3,7 @@
 
 options:
   setup_script:
-     description: a script that you want to run to configure the host and start your service. Note that service processes need to be backgrounded by the script (must not run in the foreground)
+     description: a script that you want to run to configure the host and start up your service. Note that scripts will time out after 180s - ensure any daemon processes your script starts are started in the background - for example `nohup ./my-daemon.sh \&> /var/log/my-daemon.log \&`.
      type: string
      default: ""
   environment_variables:

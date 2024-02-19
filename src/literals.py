@@ -19,6 +19,8 @@ SUBSTRATE = "vm"
 USER = "runslikeacharm"
 GROUP = "runslikeacharm"
 
+CMD_TIMEOUT=180
+
 DebugLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 Substrate = Literal["vm", "k8s"]
 DatabagScope = Literal["unit", "app"]
