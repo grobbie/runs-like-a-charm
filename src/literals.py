@@ -20,7 +20,7 @@ USER = "runslikeacharm"
 GROUP = "runslikeacharm"
 
 CMD_TIMEOUT = 180
-INTERVAL = "interval"
+INTERVAL = "restart-interval"
 DebugLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 Substrate = Literal["vm", "k8s"]
 DatabagScope = Literal["unit", "app"]
