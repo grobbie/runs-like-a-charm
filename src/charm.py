@@ -79,8 +79,11 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             return
 
         # run cloud-init for the user defined module
-        self.workload.start()
-        logger.info("Setup script executed")
+        try:
+            self.workload.start()
+            logger.info("Setup script executed")
+        except:
+            self._set_status(Status.INIT_FAIL)
 
         # check for connection
         self._on_update_status(event)
@@ -114,8 +117,11 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
                     f'Node {self.unit.name.split("/")[1]} updating setup script file'
                 )
             )
-            self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
-            self.workload.restart()
+            try:
+                self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
+                self.workload.restart()
+            except:
+                self._set_status(Status.INIT_FAIL)
 
     def _on_update_status(self, event: EventBase) -> None:
         """Handler for `update-status` events."""
@@ -140,7 +146,10 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         # FIXME
         time.sleep(10.0)
-        self.workload.restart()
+        try:
+            self.workload.restart()
+        except:
+            self._set_status(Status.INIT_FAIL)
 
     def _disable_enable_restart(self, event: RunWithLock) -> None:
         """Handler for `rolling_ops` disable_enable restart events."""

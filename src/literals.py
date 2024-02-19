@@ -24,7 +24,7 @@ Substrate = Literal["vm", "k8s"]
 DatabagScope = Literal["unit", "app"]
 
 PATHS = {
-    "INSTALL_SCRIPT": "/opt/user-install-script.sh",
+    "INSTALL_SCRIPT": "/opt/user-install-script",
 }
 
 @dataclass
