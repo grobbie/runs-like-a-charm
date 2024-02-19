@@ -136,7 +136,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
-        interval = self.model.get_relation(self.restart_manager.name).data[self.app].get(INTERVAL)
+        interval = int(self.model.get_relation(self.restart_manager.name).data[self.app].get(INTERVAL))
         time.sleep(interval)
         try:
             # reboot the instance
