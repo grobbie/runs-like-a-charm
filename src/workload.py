@@ -13,23 +13,25 @@ from tenacity.retry import retry_if_not_result
 from tenacity.stop import stop_after_attempt
 from tenacity.wait import wait_fixed
 from typing_extensions import override
-
+from literals import PATHS
 from core.workload import WorkloadBase
 
 logger = logging.getLogger(__name__)
 
 
 class RunsLikeACharmWorkload(WorkloadBase):
-    """Wrapper for performing common operations specific to the """
-    """RunsLikeACharm user-defined CloudInit script."""
+    """Wrapper for performing common operations specific to the 
+        RunsLikeACharm user-defined script.
+    """
 
     @override
     def start(self) -> None:
-        """Force runs cloud-init"""
+        """Runs the setup script"""
+        the_script = PATHS["INSTALL_SCRIPT"]
         try:
-            self.exec("/usr/bin/cloud-init modules")
+            self.exec(f"/bin/sh {the_script}")
         except Exception as e:
-            logger.error(f"running cloud-init failed - stdout={e.stdout}, stderr={e.stderr}")
+            logger.error(f"running setup script failed - stdout={e.stdout}, stderr={e.stderr}")
             raise e
 
     @override
@@ -38,12 +40,8 @@ class RunsLikeACharmWorkload(WorkloadBase):
 
     @override
     def restart(self) -> None:
-        """Same as start - force runs cloud-init"""
-        try:
-            self.exec("/usr/bin/cloud-init modules")
-        except Exception as e:
-            logger.error(f"running cloud-init failed - stdout={e.stdout}, stderr={e.stderr}")
-            raise e
+        """Same as start - runs the setup script"""
+        start()
 
     @override
     def read(self, path: str) -> list[str]:
@@ -61,7 +59,7 @@ class RunsLikeACharmWorkload(WorkloadBase):
         with open(path, mode) as f:
             f.write(content)
 
-        # self.exec(f"chown -R {USER}:{GROUP} {path}")
+        self.exec(f"chmod +x {path}")
         return True
 
     @override

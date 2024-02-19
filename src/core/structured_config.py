@@ -54,7 +54,7 @@ class CharmConfig(BaseConfigModel):
     """Manager for the structured configuration."""
 
     environment_variables: Optional[str] = None
-    cloud_init_yaml: Optional[str] = None
+    setup_script: Optional[str] = None
 
     @validator("*", pre=True)
     @classmethod
@@ -80,15 +80,12 @@ class CharmConfig(BaseConfigModel):
                 raise ValueError("Invalid environment variable provided")
         return value
 
-    @validator("cloud_init_yaml")
+    @validator("setup_script")
     @classmethod
-    def cloud_init_yaml_validator(cls, value: str) -> str | None:
-        """Check validity of `cloud_init_config` field."""
+    def setup_script_validator(cls, value: str) -> str | None:
+        """Check validity of `setup-script` field."""
         if value is None:
             return ""
 
-        try:
-            yaml.safe_load(value)    
-        except yaml.YAMLError:
-                raise ValueError("Invalid YAML provided")
+        # no validation, for now
         return value

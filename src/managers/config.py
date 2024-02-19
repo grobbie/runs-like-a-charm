@@ -30,20 +30,20 @@ class RunsLikeACharmConfigManager:
         self.config = config
 
     @property
-    def cloud_init_path(self) -> str:
-        """Return the target path to the cloud-init config
+    def setup_script_path(self) -> str:
+        """Return the target path to the setup script
             file on the node
         """
-        return PATHS["CLOUDCFG"]
+        return PATHS["INSTALL_SCRIPT"]
 
     @property
-    def cloud_init_yaml(self) -> str:
-        """Return the cloud-init YAML provided by the user.
+    def setup_script(self) -> str:
+        """Return the setup script provided by the user.
 
         Returns:
-            cloud-init config string in YAML format
+            a setup script file to be run on the host
         """
-        return self.config.cloud_init_yaml
+        return self.config.setup_script
 
     @property
     def environment_variables(self) -> list[str]:

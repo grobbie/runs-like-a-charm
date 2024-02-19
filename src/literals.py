@@ -21,11 +21,10 @@ GROUP = "runslikeacharm"
 
 DebugLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 Substrate = Literal["vm", "k8s"]
-CloudInitScript = "cloud-init-yaml"
 DatabagScope = Literal["unit", "app"]
 
 PATHS = {
-    "CLOUDCFG": "/etc/cloud/cloud.cfg.d/zz99-runs-like-a-charm.cfg",
+    "INSTALL_SCRIPT": "/opt/user-install-script.sh",
 }
 
 @dataclass
@@ -45,7 +44,7 @@ class Status(Enum):
         ActiveStatus("user filesystem added to node at /opt/data"),
         "DEBUG",
     )
-    CLOUD_INIT_FAIL = StatusLevel(
-        BlockedStatus("cloud-init configuration cannot be set - check logs"),
+    INIT_FAIL = StatusLevel(
+        BlockedStatus("setup configuration cannot be set - check logs"),
         "ERROR",
     )

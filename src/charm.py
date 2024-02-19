@@ -65,11 +65,11 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
     def _on_install(self, _) -> None:
         """Handler for `install` event."""
-        if self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path):
-            logger.info("Set cloud-config succeeded")
+        if self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path):
+            logger.info("Set setup script succeeded")
             self.config_manager.set_environment()
         else:
-            self._set_status(Status.CLOUD_INIT_FAIL)
+            self._set_status(Status.INIT_FAIL)
 
     def _on_start(self, event: EventBase) -> None:
         """Handler for `start` event."""
@@ -80,7 +80,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
 
         # run cloud-init for the user defined module
         self.workload.start()
-        logger.info("CloudInit script executed")
+        logger.info("Setup script executed")
 
         # check for connection
         self._on_update_status(event)
@@ -96,27 +96,25 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
             event.defer()
             return
 
-        # NOTE todo: check this bit
-        # Load current properties set in the charm workload
-        cloud_init_file = self.workload.read(self.config_manager.cloud_init_path)
-        cloud_init_file_changed = set(cloud_init_file) ^ set(self.config_manager.cloud_init_yaml)
+        # load up setup script
+        setup_script_file = self.workload.read(self.config_manager.setup_script_path)
+        setup_script_file_changed = set(setup_script_file) ^ set(self.config_manager.setup_script)
 
-        if not cloud_init_file:
+        if not setup_script_file:
             # Event fired before charm has properly started
             event.defer()
             return
-        # /todo
 
         # update environment
         self.config_manager.set_environment()
 
-        if cloud_init_file_changed:
+        if setup_script_file_changed:
             logger.info(
                 (
-                    f'Node {self.unit.name.split("/")[1]} updating cloud-init yaml file'
+                    f'Node {self.unit.name.split("/")[1]} updating setup script file'
                 )
             )
-            self.workload.write(self.config_manager.cloud_init_yaml, self.config_manager.cloud_init_path)
+            self.workload.write(self.config_manager.setup_script, self.config_manager.setup_script_path)
             self.workload.restart()
 
     def _on_update_status(self, event: EventBase) -> None:
@@ -124,7 +122,7 @@ class RunsLikeACharm(TypedCharmBase[CharmConfig]):
         if not self.healthy:
             return
 
-        # If cloud-init script has changed, the node will restart.
+        # If setup script script has changed, the node will restart.
         self._on_config_changed(event)
 
         self._set_status(Status.ACTIVE)

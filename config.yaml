@@ -2,10 +2,10 @@
 # See LICENSE file for licensing details.
 
 options:
-  cloud_init_yaml:
-     description: a base64 encoded YAML file following the cloud-init specification.
+  setup_script:
+     description: a script that you want to run to configure the host and start your service. Note that service processes need to be backgrounded by the script (must not run in the foreground)
      type: string
-     default: "#cloud-config"
+     default: ""
   environment_variables:
      description: a set of comma (,) delimited key=value pairs.
      type: string
