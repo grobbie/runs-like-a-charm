@@ -17,7 +17,7 @@ from health import RunsLikeACharmHealth
 from literals import (
     CHARM_KEY,
     PEER,
-    INTERVAL
+    INTERVAL,
     Status,
     Substrate,
     DebugLevel,
